@@ -23,9 +23,12 @@ const games = [];
  * Ef notandi ýtir á "cancel" þá er sótt niðurstöður með getResults() og þær birtar með alert().
  */
 function start() {
-  play();
-  while(confirm("Viltu spila aftur?")){
-    play();
+  if (play()) {
+    while (confirm("Viltu spila aftur?")) {
+      if(!play()){
+        break;
+      }
+    }
   }
   getResults();
 }
@@ -48,18 +51,19 @@ function play() {
   const random = randomNumber(1, 100);
   console.log(random);
   let numOfGuess = 0;
-  while(input = prompt("Veldu tölu á bilinu 1-100", '')){
+  while (input = prompt("Veldu tölu á bilinu 1-100", '')) {
     let guess = parseGuess(input);
-    alert(getResponse(guess,random));
+    alert(getResponse(guess, random));
     numOfGuess++;
-    if(getResponse(guess,random)==="Rétt") {
+    if (getResponse(guess, random) === "Rétt") {
       games.push(numOfGuess);
-      break;
+      return true;
     }
-    if(input === null) {
-      alert('Hætt í leik'); 
-      getResults();
-    }
+  }
+  if (input === null) {
+    alert('Hætt í leik');
+    // getResults();
+    return false;
   }
 }
 
@@ -73,14 +77,17 @@ function play() {
  *    "Þú spilaðir engann leik >_<"
  */
 function getResults() {
-  if(games.length > 0) {
-    if(games.length === 1) {
+  if (games.length > 0) {
+    if (games.length === 1) {
       alert('Þú spilaðir ' + games.length + ' leik.' +
-            "\n" + 'Meðalfjödli ágiskana var ' +  calculateAverage() + '.');
-    }else {
+        "\n" + 'Meðalfjödli ágiskana var ' + calculateAverage() + '.');
+    } else {
       alert('Þú spilaðir ' + games.length + ' leiki.' +
-            "\n" + 'Meðalfjödli ágiskana var ' +  calculateAverage() + '.');
+        "\n" + 'Meðalfjödli ágiskana var ' + calculateAverage() + '.');
     }
+  }
+  else {
+    alert('Þú spilaðir engan leik >_<.')
   }
 }
 
@@ -94,10 +101,10 @@ function getResults() {
  */
 function calculateAverage() {
   let guesses = 0;
-  for(let i = 0; i < games.length; i++) {
+  for (let i = 0; i < games.length; i++) {
     guesses += games[i];
   }
-  return (guesses/games.length).toFixed(2);
+  return (guesses / games.length).toFixed(2);
 }
 
 /**
@@ -124,22 +131,22 @@ function parseGuess(input) {
  * Math.abs skilar algildi tölu: |a| = Math.abs(a)
  */
 function getResponse(guess, correct) {
-  distance = Math.abs(correct-guess);
+  distance = Math.abs(correct - guess);
 
-  if(distance < 0 || isNaN(distance)) {
+  if (distance < 0 || isNaN(distance)) {
     return 'Ekki rétt';
   }
 
-  if(distance === 0) {
+  if (distance === 0) {
     return 'Rétt';
   }
-  if(distance < 5) {
+  if (distance < 5) {
     return 'Mjög nálægt';
-  }else if(distance < 10) {
+  } else if (distance < 10) {
     return 'Nálægt';
-  }else if(distance < 20) {
+  } else if (distance < 20) {
     return 'Frekar langt frá';
-  }else if(distance < 50) {
+  } else if (distance < 50) {
     return 'Langt frá';
   }
 
