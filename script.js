@@ -62,7 +62,6 @@ function play() {
   }
   if (input === null) {
     alert('Hætt í leik');
-    // getResults();
     return false;
   }
 }
