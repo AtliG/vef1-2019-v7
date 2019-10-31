@@ -27,7 +27,7 @@ function start() {
   while(confirm("Viltu spila aftur?")){
     play();
   }
-  agetResults();
+  getResults();
 }
 
 /**
@@ -56,9 +56,10 @@ function play() {
       games.push(numOfGuess);
       break;
     }
-  }
-  if(input === null) {
-    alert('Hætt í leik'); 
+    if(input === null) {
+      alert('Hætt í leik'); 
+      getResults();
+    }
   }
 }
 
@@ -72,18 +73,15 @@ function play() {
  *    "Þú spilaðir engann leik >_<"
  */
 function getResults() {
-  var result;
   if(games.length > 0) {
     if(games.length === 1) {
       alert('Þú spilaðir ' + games.length + ' leik.' +
-            "\n" + ' Meðalfjödli ágiskana var ' +  calculateAverage() + '.');
+            "\n" + 'Meðalfjödli ágiskana var ' +  calculateAverage() + '.');
     }else {
-      result = 'Þú spilaðir ' + games.length + ' leiki.'
-                + ' Meðalfjödli ágiskana var ' +  calculateAverage() + '.';
+      alert('Þú spilaðir ' + games.length + ' leiki.' +
+            "\n" + 'Meðalfjödli ágiskana var ' +  calculateAverage() + '.');
     }
   }
-
-  return result;
 }
 
 /**
@@ -99,7 +97,7 @@ function calculateAverage() {
   for(let i = 0; i < games.length; i++) {
     guesses += games[i];
   }
-  return guesses/games.length;
+  return (guesses/games.length).toFixed(2);
 }
 
 /**
